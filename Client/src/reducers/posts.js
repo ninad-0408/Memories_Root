@@ -1,8 +1,8 @@
 const reducer = (state = [], action) => {
 
     switch (action.type) {
-        case "FETCH_POSTS":
-            return state;
+        case "FETCH_ALL":
+            return action.payload;
 
         case "CREATE":
             return state;
