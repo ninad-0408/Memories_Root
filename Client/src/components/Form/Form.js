@@ -24,7 +24,7 @@ const Form = () => {
     };
 
     return (
-        <Paper className={classes.paper}>
+        <Paper className={classes.paper} xs={12} md={6} >
             <form autoComplete="off" noValidate className={`${classes.form} ${classes.root}`} onSubmit={handleSubmit}>
                 <Typography varient="h6">
                     Creating a Memory

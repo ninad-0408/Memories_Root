@@ -22,3 +22,20 @@ export const createPost = async (req,res) => {
         res.status(error.status).json({ message : error.message });
     }
 }
+
+export const updatePost = async (req,res) => {
+
+    const { id: _id } = req.params;
+    const body = req.body;
+
+    if(!mongoose.Schema.Types.ObjectId.isValid(_id))
+    return res.status(404).json({ message: "Unable to find memory." });
+    
+    try {
+        const updatedPost = await PostMessage.findByIdAndUpdate(_id, body, { new: true });
+        res.status(200).json(updatedPost);
+
+    } catch (error) {
+        res.status(error.status).json({ message : error.message });
+    }
+}
