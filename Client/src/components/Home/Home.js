@@ -8,7 +8,7 @@ import Form from "../Form/Form";
 import { getPosts } from '../../actions/posts';
 
 const Home = () => {
-    
+
     const dispatch = useDispatch();
     const [currentId, setcurrentId] = useState(null);
 
