@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import GoogleLogin from 'react-google-login';
 import { Avatar, Button, Container, Grid, Paper, Typography } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 
 import Input from './Input';
+import Gicon from './Gicon';
 
 import useStyles from './styles';
 
@@ -22,6 +24,16 @@ const Auth = () => {
     const handleChange = () => {
 
     };
+
+    const googleSuccess = async (res) => {
+        console.log(res);
+    };
+
+    const googleFailure = (error) => {
+        console.log(error);
+        console.log("Unable to login.");
+    };
+
 
     return (
         <Container component='main' maxWidth='xs' >
@@ -51,6 +63,17 @@ const Auth = () => {
                     <Button type='submit' color='primary' variant='contained' className={classes.submit} fullWidth>
                         {isSignup ? 'Sign up' : 'Login'}
                     </Button>
+                    <GoogleLogin
+                        clientId='25003741379-1v51bjjpmf2ck003k17g6jd7e4ffmdba.apps.googleusercontent.com'
+                        render={(renderProps) => (
+                            <Button className={classes.googleButton} color='primary' onClick={renderProps.onClick} disabled={renderProps.disabled} startIcon={<Gicon />} fullWidth variant='contained'>
+                                Sign In with Google
+                            </Button>
+                        )}
+                        onSuccess={googleSuccess}
+                        onFailure={googleFailure}
+                        cookiePolicy='single_host_origin'
+                    />
                     <Grid container justify='flex-end'>
                         <Grid item>
                             <Button color='secondary' onClick={switchMode}>
