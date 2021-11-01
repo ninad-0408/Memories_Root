@@ -2,17 +2,23 @@ import React, { useState, useEffect } from 'react';
 import GoogleLogin from 'react-google-login';
 import { Avatar, Button, Container, Grid, Paper, Typography } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import Input from './Input';
 import Gicon from './Gicon';
+import { auth } from '../../actions/auth';
 
 import useStyles from './styles';
 
 const Auth = () => {
 
     const classes = useStyles();
+    const dispatch = useDispatch();
+    const history = useHistory();
+
     const [showPassword, setshowPassword] = useState(false);
-    const [isSignup, setisSignup] = useState(false)
+    const [isSignup, setisSignup] = useState(false);
 
     const handleShowPassword = () => setshowPassword((e) => !e);
     const switchMode = () => { setshowPassword(false); setisSignup((e) => !e); };
@@ -26,7 +32,15 @@ const Auth = () => {
     };
 
     const googleSuccess = async (res) => {
-        console.log(res);
+        const result = res.profileObj;
+        const token = res.tokenId;
+
+        try {
+            dispatch(auth(result,token));
+            history.push('/');
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const googleFailure = (error) => {
