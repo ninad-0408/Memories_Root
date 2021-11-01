@@ -1,6 +1,9 @@
 import axios from "axios";
 
-const url = "http://localhost:3000/posts";
+// const url = "http://localhost:500/posts";
+const url = "https://momory-react.herokuapp.com/posts";
+
+console.log(url);
 
 export const fetchPosts = () => axios.get(url);
 export const createPost = (newPost) => axios.post(url, newPost);
