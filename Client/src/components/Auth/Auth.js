@@ -7,9 +7,11 @@ import { useHistory } from 'react-router-dom';
 
 import Input from './Input';
 import Gicon from './Gicon';
-import { auth } from '../../actions/auth';
+import { auth, login, signup } from '../../actions/auth';
 
 import useStyles from './styles';
+
+const initialState = { firstName: '', lastName: '', password: '', confirmPassword: '' };
 
 const Auth = () => {
 
@@ -19,15 +21,25 @@ const Auth = () => {
 
     const [showPassword, setshowPassword] = useState(false);
     const [isSignup, setisSignup] = useState(false);
+    const [formData, setformData] = useState(initialState);
 
     const handleShowPassword = () => setshowPassword((e) => !e);
     const switchMode = () => { setshowPassword(false); setisSignup((e) => !e); };
 
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        
+        if(isSignup)
+        dispatch(signup(formData, history));
+        else
+        dispatch(login(formData, history));
 
     };
 
-    const handleChange = () => {
+    const handleChange = (e) => {
+        setformData({ ...formData, [e.target.name]: [e.target.value] });
+
+        console.log(formData);
 
     };
 
@@ -36,7 +48,7 @@ const Auth = () => {
         const token = res.tokenId;
 
         try {
-            dispatch(auth(result,token));
+            dispatch(auth(result, token));
             history.push('/');
         } catch (error) {
             console.log(error);

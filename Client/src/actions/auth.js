@@ -31,3 +31,23 @@ export const userLogout = () => async (dispatch) => {
         console.log(error);
     }
 }
+
+export const login = (formData, history) => async (dispatch) => {
+
+    try {
+        
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const signup = (formData, history) => async (dispatch) => {
+
+    try {
+        
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
