@@ -28,19 +28,16 @@ const Auth = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
-        if(isSignup)
-        dispatch(signup(formData, history));
+
+        if (isSignup)
+            dispatch(signup(formData, history));
         else
-        dispatch(login(formData, history));
+            dispatch(login(formData, history));
 
     };
 
     const handleChange = (e) => {
-        setformData({ ...formData, [e.target.name]: [e.target.value] });
-
-        console.log(formData);
-
+        setformData({ ...formData, [e.target.name]: e.target.value });
     };
 
     const googleSuccess = async (res) => {
@@ -48,8 +45,7 @@ const Auth = () => {
         const token = res.tokenId;
 
         try {
-            dispatch(auth(result, token));
-            history.push('/');
+            dispatch(auth(result, token, history));
         } catch (error) {
             console.log(error);
         }
@@ -93,7 +89,7 @@ const Auth = () => {
                         clientId='25003741379-1v51bjjpmf2ck003k17g6jd7e4ffmdba.apps.googleusercontent.com'
                         render={(renderProps) => (
                             <Button className={classes.googleButton} color='primary' onClick={renderProps.onClick} disabled={renderProps.disabled} startIcon={<Gicon />} fullWidth variant='contained'>
-                                Sign In with Google
+                            {isSignup ? 'Sign up' : 'Login'} with Google
                             </Button>
                         )}
                         onSuccess={googleSuccess}
