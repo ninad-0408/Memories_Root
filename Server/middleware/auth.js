@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import userModel from '../models/user.js';
+import { notAuthorized, dataUnaccesable } from '../alerts/errors.js';
 
 const auth = async (req, res, next) => {
     
@@ -10,7 +11,7 @@ const auth = async (req, res, next) => {
         if(token)
         {
             if(token.length < 500)
-            req.userId = jwt.verify(token, 'test');
+            req.userId = jwt.verify(token, 'test').id;
             else
             {
                 const googleId = jwt.decode(token).sub;
@@ -21,10 +22,13 @@ const auth = async (req, res, next) => {
             }
             next();
         }
+        else
+        return notAuthorized(res);
         
-    } catch (error) {
-        console.log(error)
+    } catch(error) {
+        return dataUnaccesable(res);
     }
+
 }
 
 export default auth;

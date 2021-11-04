@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { Card, CardActions, CardContent, CardMedia, Button, Typography } from "@material-ui/core";
+import { Card, CardActions, CardContent, CardMedia, Button, Typography, Avatar } from "@material-ui/core";
 import { deletePost, likePost } from "../../../actions/posts";
 import ThumbUPAltIcon from "@material-ui/icons/ThumbUpAlt";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -14,12 +14,14 @@ const Post = ({ post, setcurrentId }) => {
     const dispatch = useDispatch();
 
     const classes = useStyles();
+    console.log(post);
 
     return (
         <Card className={classes.card}>
             <CardMedia className={classes.media} image={post.selectedFile} title={post.title} />
             <div className={classes.overlay}>
-                <Typography variant="h6">{post.creator}</Typography>
+                <Avatar className={classes.purple} src={post.creator.imageUrl} alt={post.creator.name}>{post.creator.name.charAt(0)}</Avatar>
+                <Typography variant="h6">{post.creator.name}</Typography>
                 <Typography variant="body2">{moment(post.createdAt).fromNow()}</Typography>
             </div>
             <div className={classes.overlay2}>

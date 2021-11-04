@@ -1,28 +1,34 @@
-import PostMessage from '../models/postMessage.js';
 import mongoose from "mongoose";
+import memoryModel from '../models/post.js';
+
+import { dataUnaccesable, notFound, notValid } from '../alerts/errors.js';
 
 export const getPosts = async (req,res) => {
     try {
-        const postMessages = await PostMessage.find();
-        res.status(200).json(postMessages);
+        const posts = await memoryModel.find()
+                                       .populate('creator', ['name', 'imageUrl']);
+        return res.status(200).json(posts);
 
     } catch (error) {
-        res.status(error.status).json({ message : error.message });
+        return dataUnaccesable(res);
     }
 };
 
 export const createPost = async (req,res) => {
-    const body = req.body;
-    
-    const newPost = new PostMessage(body);
+    var body = req.body;
+    body.creator = mongoose.Types.ObjectId(req.userId);
+
     try {
-        await newPost.save();
-        res.status(201).json(newPost);
+        const { id: _id } = await memoryModel.create(body);
+        const post = await memoryModel.findById(id)
+                                .populate('creator', ['name', 'imageUrl']);
+        return res.status(200).json(post);
 
     } catch (error) {
-        res.status(error.status).json({ message : error.message });
+        console.log(error);
+        return dataUnaccesable(res);
     }
-}
+};
 
 export const updatePost = async (req,res) => {
 
@@ -30,46 +36,57 @@ export const updatePost = async (req,res) => {
     const body = req.body;
 
     if(!mongoose.Types.ObjectId.isValid(id))
-    return res.status(404).json({ message: "Unable to find memory." });
+    return notValid(res);
     
     try {
-        const updatedPost = await PostMessage.findByIdAndUpdate(id, { ...body, _id: id }, { new: true });
-        res.status(200).json(updatedPost);
+        const updatedPost = await memoryModel.findByIdAndUpdate(id, { ...body, _id: id }, { new: true })
+                                             .populate('creator', ['name', 'imageUrl']);
+        if(updatedPost)
+        return res.status(200).json(updatedPost);
 
     } catch (error) {
-        res.status(error.status).json({ message : error.message });
+        return dataUnaccesable(res);
     }
-}
+
+    return notFound(res, 'Memory');
+};
 
 export const likePost = async (req,res) => {
 
     const { id } = req.params;
 
     if(!mongoose.Types.ObjectId.isValid(id))
-    return res.status(404).json({ message: "Unable to find memory." });
+    return notValid(res);
 
     try {
-        const post = await PostMessage.findById(id);
-        const updatedPost = await PostMessage.findByIdAndUpdate(id, { likeCount: post.likeCount + 1 }, { new: true });
-        res.status(200).json(updatedPost);
+        const post = await memoryModel.findById(id);
+        const updatedPost = await memoryModel.findByIdAndUpdate(id, { likeCount: post.likeCount + 1 }, { new: true })
+                                             .populate('creator', ['name', 'imageUrl']);
+        if(updatedPost)
+        return res.status(200).json(updatedPost);
 
     } catch (error) {
-        res.status(error.status).json({ message : error.message });
+        return dataUnaccesable(res);
     }
-}
+
+    return notFound(res, 'Memory');
+};
 
 export const deletePost = async (req,res) => {
 
     const { id } = req.params;
 
     if(!mongoose.Types.ObjectId.isValid(id))
-    return res.status(404).json({ message: "Unable to find memory." });
+    return notValid(res);
 
     try {
-        await PostMessage.findByIdAndDelete(id);
+        const updatedPost = await memoryModel.findByIdAndDelete(id);
+        if(updatedPost)
         return res.status(200).json({ message: "Memory deleted successfully." });        
         
     } catch (error) {
-        res.status(error.status).json({ message : error.message });
+        return dataUnaccesable(res);
     }
-}
+
+    return notFound(res, 'Memory');
+};

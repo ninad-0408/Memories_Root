@@ -9,6 +9,11 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    likes: {
+        type: [mongoose.Types.ObjectId],
+        ref: 'memoryModel',
+        default: []
+    },
     password: String,
     googleId: String,
     imageUrl: String

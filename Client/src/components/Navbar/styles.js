@@ -23,12 +23,13 @@ export default makeStyles((theme) => ({
   toolbar: {
     display: 'flex',
     justifyContent: 'flex-end',
-    width: '400px',
+    width: '18em',
   },
   profile: {
     display: 'flex',
     justifyContent: 'space-between',
-    width: '400px',
+    width: '100%',
+    maxHeight: '35px'
   },
   userName: {
     display: 'flex',
@@ -44,4 +45,11 @@ export default makeStyles((theme) => ({
     color: theme.palette.getContrastText(deepPurple[500]),
     backgroundColor: deepPurple[500],
   },
+
+  [theme.breakpoints.down('xs')]:
+  {
+    appBar: {
+      flexDirection: 'column',
+    }
+  }
 }));

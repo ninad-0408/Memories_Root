@@ -18,8 +18,8 @@ export const login = async(req, res) => {
             else
             {
                 const { name, googleId, imageUrl } = req.body;
-                await userModel.create({ name: name, email: email, googleId: googleId, imageUrl: imageUrl });
-                return res.status(200);
+                const result = await userModel.create({ name: name, email: email, googleId: googleId, imageUrl: imageUrl });
+                return res.status(200).json({ result });
             }
         }
 

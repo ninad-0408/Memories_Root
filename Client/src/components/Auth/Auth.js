@@ -41,11 +41,11 @@ const Auth = () => {
     };
 
     const googleSuccess = async (res) => {
-        const result = res.profileObj;
+        const oauthData = res.profileObj;
         const token = res.tokenId;
 
         try {
-            dispatch(auth(result, token, history));
+            dispatch(auth(oauthData, token, history));
         } catch (error) {
             console.log(error);
         }

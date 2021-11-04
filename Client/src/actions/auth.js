@@ -1,10 +1,13 @@
 import * as actionTypes from '../constants/actionTypes';
 import * as api from '../api/index';
 
-export const auth = (result, token, history) => async (dispatch) => {
+export const auth = (oauthData, token, history) => async (dispatch) => {
 
     try {
-        await api.userLogin(result);   
+        const { data } = await api.userLogin(oauthData);   
+        const { result } = data;
+
+        console.log(result);
 
         const action = {
             type: actionTypes.AUTH,
@@ -18,7 +21,7 @@ export const auth = (result, token, history) => async (dispatch) => {
 
     } catch (error) {
         console.log(error);
-        history.push('/auth');
+        history.push('/');
     }
 
 }
