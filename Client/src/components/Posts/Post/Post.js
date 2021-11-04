@@ -14,7 +14,6 @@ const Post = ({ post, setcurrentId }) => {
     const dispatch = useDispatch();
 
     const classes = useStyles();
-    console.log(post);
 
     return (
         <Card className={classes.card}>
