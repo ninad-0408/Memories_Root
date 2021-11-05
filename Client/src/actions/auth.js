@@ -7,8 +7,6 @@ export const auth = (oauthData, token, history) => async (dispatch) => {
         const { data } = await api.userLogin(oauthData);   
         const { result } = data;
 
-        console.log(result);
-
         const action = {
             type: actionTypes.AUTH,
             payload: {

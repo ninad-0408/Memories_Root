@@ -6,13 +6,13 @@ export const dataUnaccesable = (res) => {
 
 export const notLoggedIn = (res) => {
     var err = new Error("You are not logged in.");
-    err.status = 401;
+    err.status = 403;
     return res.status(err.status).json({ err });
 };
 
 export const notAuthorized = (res) => {
     var err = new Error("You are not authorized.");
-    err.status = 403;
+    err.status = 401;
     return res.status(err.status).json({ err });
 };
 
